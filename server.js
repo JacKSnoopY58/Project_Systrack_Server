@@ -46,7 +46,7 @@ pool.query = util.promisify(pool.query);
 // *-------- คำสั่งจาก ๆ จาก Server ----------
 // ? GET PORT /
 app.get('/', (req, res) => {
-    res.send("Welcome to Back-END! ITVERTEX SERVICE!")
+    res.send("Welcome to Back-END! Systrack Navigater system!")
 })
 
 // ! เข้าสู่ระบบ 
