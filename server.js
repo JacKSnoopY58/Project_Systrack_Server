@@ -389,14 +389,14 @@ app.get("/api/customer_read", checkAuth , (req, res) => {
 app.get("/api/report_count", (req, res) => {
     const query = "SELECT dt.device_type_name, " +
     "CASE " +
-        "WHEN dt.device_type_name = 'ไม้กั้น' THEN (SELECT COUNT(*) FROM tbl_access_ct WHERE place_id = 18) " +
-        "WHEN dt.device_type_name = 'Access Control' THEN  COUNT(ac.ac_id) " +
-        "WHEN dt.device_type_name = 'CCTV' THEN COUNT(ipc.ipc_id) " +
+        "WHEN dt.device_type_id = 3 THEN (SELECT COUNT(*) FROM tbl_access_ct WHERE place_id = 18) " +
+        "WHEN dt.device_type_id = 2 THEN  COUNT(ac.ac_id) " +
+        "WHEN dt.device_type_id = 1 THEN COUNT(ipc.ipc_id) " +
         "ELSE 0 " +
     "END AS Total " +
     "FROM tbl_device_types dt " +
-    "LEFT JOIN tbl_access_ct ac ON dt.device_type_name = 'Access Control' " +
-    "LEFT JOIN tbl_ipc ipc ON dt.device_type_name = 'CCTV' " +
+    "LEFT JOIN tbl_access_ct ac ON dt.device_type_id = 2 " +
+    "LEFT JOIN tbl_ipc ipc ON dt.device_type_id = 1 " +
     "GROUP BY  dt.device_type_name ";
 
     pool.query(query, (error, results) => {

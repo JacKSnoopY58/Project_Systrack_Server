@@ -73,4 +73,26 @@ LEFT JOIN
 GROUP BY 
     dt.device_type_name;
 
+// IN HOSTING 
+SELECT 
+    dt.device_type_name,
+    CASE
+        WHEN dt.device_type_id = 3 THEN 
+            (SELECT COUNT(*) FROM tbl_access_ct WHERE place_id = 18)
+        WHEN dt.device_type_id = 2 THEN 
+            COUNT(ac.ac_id)
+        WHEN dt.device_type_id = 1 THEN 
+            COUNT(tbl_ipc.ipc_id)
+        ELSE 
+            0
+    END AS Total
+FROM 
+    tbl_device_types dt
+LEFT JOIN 
+    tbl_access_ct ac ON dt.device_type_id = 2
+LEFT JOIN 
+    tbl_ipc ON dt.device_type_id = 1
+GROUP BY 
+    dt.device_type_name;
+
 
