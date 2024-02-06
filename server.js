@@ -23,24 +23,24 @@ app.use(cors());
 // *------------------------------
 
 // *----- เปิดใช้งาน Server --------
-// const pool = mysql.createPool({
-//     connectLimit: 10,
-//     host : "localhost",
-//     user: "root",
-//     password : "",
-//     database : "itservice_db"
-// });
-// pool.query = util.promisify(pool.query);
-
-
 const pool = mysql.createPool({
     connectLimit: 10,
-    host : "sql6.freemysqlhosting.net",
-    user: "sql6680797",
-    password : "FrY5K5x3xj",
-    database : "sql6680797"
+    host : "localhost",
+    user: "root",
+    password : "",
+    database : "itservice_db"
 });
 pool.query = util.promisify(pool.query);
+
+
+// const pool = mysql.createPool({
+//     connectLimit: 10,
+//     host : "sql6.freemysqlhosting.net",
+//     user: "sql6680797",
+//     password : "FrY5K5x3xj",
+//     database : "sql6680797"
+// });
+// pool.query = util.promisify(pool.query);
 // *------------------------------
 
 // *-------- คำสั่งจาก ๆ จาก Server ----------
@@ -386,6 +386,35 @@ app.get("/api/customer_read", checkAuth , (req, res) => {
 });
 // *-----------------------------------------------
 // *    แสดงข้อมูลกราฟ
+app.get("/api/report_count", (req, res) => {
+    const query = "SELECT dt.device_type_name, " +
+    "CASE " +
+        "WHEN dt.device_type_name = 'ไม้กั้น' THEN (SELECT COUNT(*) FROM tbl_access_ct WHERE place_id = 18) " +
+        "WHEN dt.device_type_name = 'Access Control' THEN  COUNT(ac.ac_id) " +
+        "WHEN dt.device_type_name = 'CCTV' THEN COUNT(ipc.ipc_id) " +
+        "ELSE 0 " +
+    "END AS Total " +
+    "FROM tbl_device_types dt " +
+    "LEFT JOIN tbl_access_ct ac ON dt.device_type_name = 'Access Control' " +
+    "LEFT JOIN tbl_ipc ipc ON dt.device_type_name = 'CCTV' " +
+    "GROUP BY  dt.device_type_name ";
+
+    pool.query(query, (error, results) => {
+        if (error) {
+            res.json({
+                result: false,
+                message: error.message
+            });
+        } else {
+            res.json({
+                result: true,
+                data: results
+            });
+        }
+    });
+    
+});
+
 app.get("/api/report", (req, res) => {
     const query = "SELECT a.device_type_name, COALESCE(COUNT(c.device_number), 0) AS total " +
                 "FROM tbl_device_types a " +

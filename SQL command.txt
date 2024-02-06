@@ -1,0 +1,76 @@
+---------- select All CCTV ---------------
+SELECT
+    t1.ipc_id,
+    t1.ipc_address,
+    t1.ipc_name,
+    t2.ipc_status_name
+FROM
+    tbl_ipc t1
+JOIN
+    tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status;
+
+way 2 -------------
+
+SELECT
+    ipc_id,
+    ipc_address,
+    ipc_name,
+    ipc_status_name
+FROM
+    tbl_ipc ipc
+JOIN
+    tbl_ipc_status status ON ipc.ipc_status = status.ipc_status;
+
+--------- Insert CCTV -----------------------
+INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status) VALUES (?,?,?);
+
+---------- UPDATE CCTV ----------------------
+"UPDATE tbl_ipc SET "
+                + "ipc_address=?,"
+                + "ipc_name=?,"
+                + "ipc_status=? "
+                + "WHERE ipc_id = ?";
+
+*****************************************************************
+
+---------- SELECT All ACCESS CONTROL ---------------
+SELECT t1.ac_id, t1.ac_ip, t1.ac_device_name, t2.place_name FROM tbl_access_ct t1
+JOIN tbl_place t2 ON t1.place_id = t2.place_id
+
+--------- INSERT ACCESS CONTROL -----------------------
+INSERT INTO tbl_access_ct (ac_ip, ac_device_name, place_id) VALUES (?,?,?);
+
+----------- UPDATE ACCESS CONTROL --------------------
+UPDATE tbl_access_ct SET ac_ip=?,ac_device_name=?, place_id=? WHERE ac_id=?;
+**ถ้า update ได้ให้ไล่เช็คแต่ไม่มีอะไรเปลี่ยนใน database ชื่อตัวแปร Font ยัน Backไปเลยยยยยย
+
+----------- DELETE ACCESS CONTROL -------------------
+DELETE FROM tbl_access_ct WHERE ac_id = ?;
+
+------------ SELECT 1 DATA FROM ID -----------------
+SELECT * FROM tbl_access_ct WHERE ac_id = ?;
+
+********************************************************************
+SQL For Chart.js
+SELECT 
+    dt.device_type_name,
+    CASE
+        WHEN dt.device_type_name = 'ไม้กั้น' THEN 
+            (SELECT COUNT(*) FROM tbl_access_ct WHERE place_id = 18)
+        WHEN dt.device_type_name = 'Access Control' THEN 
+            COUNT(ac.ac_id)
+        WHEN dt.device_type_name = 'CCTV' THEN 
+            COUNT(ipc.ipc_id)
+        ELSE 
+            0
+    END AS Total
+FROM 
+    tbl_device_types dt
+LEFT JOIN 
+    tbl_access_ct ac ON dt.device_type_name = 'Access Control'
+LEFT JOIN 
+    tbl_ipc ipc ON dt.device_type_name = 'CCTV'
+GROUP BY 
+    dt.device_type_name;
+
+
