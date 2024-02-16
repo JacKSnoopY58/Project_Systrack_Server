@@ -23,24 +23,24 @@ app.use(cors());
 // *------------------------------
 
 // *----- เปิดใช้งาน Server --------
-// const pool = mysql.createPool({
-//     connectLimit: 10,
-//     host : "localhost",
-//     user: "root",
-//     password : "",
-//     database : "itservice_db"
-// });
-// pool.query = util.promisify(pool.query);
-
-
 const pool = mysql.createPool({
     connectLimit: 10,
-    host : "sql6.freemysqlhosting.net",
-    user: "sql6682527",
-    password : "waciUtBD9p",
-    database : "sql6682527"
+    host : "localhost",
+    user: "root",
+    password : "",
+    database : "test"
 });
 pool.query = util.promisify(pool.query);
+
+
+// const pool = mysql.createPool({
+//     connectLimit: 10,
+//     host : "sql6.freemysqlhosting.net",
+//     user: "sql6682527",
+//     password : "waciUtBD9p",
+//     database : "sql6682527"
+// });
+// pool.query = util.promisify(pool.query);
 // *------------------------------
 
 // *-------- คำสั่งจาก ๆ จาก Server ----------
@@ -439,8 +439,8 @@ app.get("/api/report", (req, res) => {
 });
 
 app.get("/api/cctv_read_all", (req, res) => {
-    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name FROM tbl_ipc t1" +
-    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status";
+    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name, t3.place_name FROM tbl_ipc t1" +
+    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status JOIN tbl_place t3 ON t1.place_id = t3.place_id";
 
     pool.query(query, (error, results) => {
         if (error) {
@@ -459,8 +459,10 @@ app.get("/api/cctv_read_all", (req, res) => {
 });
 
 app.get("/api/cctv_read_online", (req, res) => {
-    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name FROM tbl_ipc t1" +
-    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status WHERE t1.ipc_status = 1";
+    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name, t3.place_name FROM tbl_ipc t1" +
+    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status" +
+    " JOIN tbl_place t3 ON t1.place_id = t3.place_id " +
+    " WHERE t1.ipc_status = 1 ";
 
     pool.query(query, (error, results) => {
         if (error) {
@@ -479,8 +481,10 @@ app.get("/api/cctv_read_online", (req, res) => {
 });
 
 app.get("/api/cctv_read_offline", (req, res) => {
-    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name FROM tbl_ipc t1" +
-    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status WHERE t1.ipc_status = 2";
+    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name, t3.place_name FROM tbl_ipc t1" +
+    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status" +
+    " JOIN tbl_place t3 ON t1.place_id = t3.place_id" +
+    " WHERE t1.ipc_status = 2";
 
     pool.query(query, (error, results) => {
         if (error) {
@@ -499,8 +503,10 @@ app.get("/api/cctv_read_offline", (req, res) => {
 
 
 app.get("/api/cctv_read_progress", (req, res) => {
-    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name FROM tbl_ipc t1" +
-    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status WHERE t1.ipc_status = 3";
+    const query = "SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name, t3.place_name FROM tbl_ipc t1" +
+    " JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status " + 
+    " JOIN tbl_place t3 ON t1.place_id = t3.place_id " +
+    " WHERE t1.ipc_status = 3";
 
     pool.query(query, (error, results) => {
         if (error) {

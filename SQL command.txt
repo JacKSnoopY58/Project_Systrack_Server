@@ -31,6 +31,28 @@ INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status) VALUES (?,?,?);
                 + "ipc_status=? "
                 + "WHERE ipc_id = ?";
 
+----NEW SELECT ALL---
+SELECT t1.ipc_id, t1.ipc_address, t1.ipc_name, t2.ipc_status_name, t3.place_name 
+FROM tbl_ipc t1 
+JOIN tbl_ipc_status t2 ON t1.ipc_status = t2.ipc_status 
+JOIN tbl_place t3 ON t1.place_id = t3.place_id;
+
+//INSERT//
+INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status, place_id) VALUES ("110.22","TEST",1,19);
+
+INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status, place_id) VALUES (?,?,?,?);
+
+//UPDATE//
+UPDATE tbl_ipc SET ipc_address="1234.456", ipc_name="TEST Update", ipc_status= 3, place_id= 1 WHERE ipc_id = 51;
+
+"UPDATE tbl_ipc SET "
+                + "ipc_address=?,"
+                + "ipc_name=?,"
+                + "ipc_status=?,"
+		+ "place_id=? "
+                + "WHERE ipc_id = ?";
+
+
 *****************************************************************
 
 ---------- SELECT All ACCESS CONTROL ---------------
