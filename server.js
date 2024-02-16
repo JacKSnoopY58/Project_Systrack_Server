@@ -553,7 +553,8 @@ app.post("/api/cctv/create", checkAuth, async (req, res) => {
         var result = await Cctv.createCctv(pool,
             input.ipc_address,
             input.ipc_name,
-            input.ipc_status);
+            input.ipc_status,
+            input.place_id);
             
         res.json({
             result: true,
@@ -592,7 +593,8 @@ app.post("/api/cctv/update", checkAuth, async (req, res) => {
             input.ipc_id,
             input.ipc_address,
             input.ipc_name,
-            input.ipc_status);
+            input.ipc_status,
+            input.place_id);
 
         res.json({
             result: true,

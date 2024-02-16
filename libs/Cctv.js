@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 module.exports = {
-    createCctv: async (pool, ipcAddress, ipcName, ipcStatus) => {
-        var sql = "INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status) " 
-                + "VALUES (?,?,?)";
-        sql = mysql.format(sql, [ipcAddress, ipcName, ipcStatus]);
+    createCctv: async (pool, ipcAddress, ipcName, ipcStatus, cctvPlaceId) => {
+        var sql = "INSERT INTO tbl_ipc (ipc_address, ipc_name, ipc_status, place_id) " 
+                + "VALUES (?,?,?,?)";
+        sql = mysql.format(sql, [ipcAddress, ipcName, ipcStatus, cctvPlaceId]);
 
         return await pool.query(sql);
     },
@@ -16,13 +16,14 @@ module.exports = {
         return await pool.query(sql);
     },
 
-    updateCctv: async (pool, ipcId, ipAddress, ipcName, ipcStatus) => {
+    updateCctv: async (pool, ipcId, ipAddress, ipcName, ipcStatus, cctvPlaceId) => {
         var sql = "UPDATE tbl_ipc SET "
                 + "ipc_address=?,"
                 + "ipc_name=?,"
-                + "ipc_status=? "
+                + "ipc_status=?, "
+                + "place_id=? "
                 + "WHERE ipc_id = ?";
-        sql = mysql.format(sql, [ipAddress, ipcName, ipcStatus, ipcId]);
+        sql = mysql.format(sql, [ipAddress, ipcName, ipcStatus, cctvPlaceId, ipcId]);
 
         return await pool.query(sql);
     },
