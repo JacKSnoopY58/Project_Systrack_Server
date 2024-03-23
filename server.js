@@ -23,24 +23,24 @@ app.use(cors());
 // *------------------------------
 
 // *----- เปิดใช้งาน Server --------
-// const pool = mysql.createPool({
-//     connectLimit: 10,
-//     host : "localhost",
-//     user: "root",
-//     password : "",
-//     database : "test"
-// });
-// pool.query = util.promisify(pool.query);
-
-
 const pool = mysql.createPool({
     connectLimit: 10,
-    host : "sql6.freemysqlhosting.net",
-    user: "sql6689259",
-    password : "xQU4jK1wen",
-    database : "sql6689259"
+    host : "localhost",
+    user: "root",
+    password : "",
+    database : "test"
 });
 pool.query = util.promisify(pool.query);
+
+
+// const pool = mysql.createPool({
+//     connectLimit: 10,
+//     host : "sql6.freemysqlhosting.net",
+//     user: "sql6689259",
+//     password : "xQU4jK1wen",
+//     database : "sql6689259"
+// });
+// pool.query = util.promisify(pool.query);
 // *------------------------------
 
 // *-------- คำสั่งจาก ๆ จาก Server ----------
